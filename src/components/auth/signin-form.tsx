@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 interface SignInFormProps {
-  onSubmit?: (data: { email: string; password: string }) => Promise<void>;
   isLoading?: boolean;
   error?: string;
 }
 
 export function SignInForm({
-  onSubmit,
   isLoading = false,
   error,
 }: SignInFormProps) {
@@ -22,27 +20,47 @@ export function SignInForm({
   const [formError, setFormError] = React.useState<string | null>(
     error || null,
   );
+  const [loading, setLoading] = React.useState(isLoading);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormError(null);
+    setLoading(true);
 
     if (!email.trim()) {
       setFormError("Please enter your email or user ID");
+      setLoading(false);
       return;
     }
 
     if (!password) {
       setFormError("Please enter your password");
+      setLoading(false);
       return;
     }
 
-    if (onSubmit) {
-      try {
-        await onSubmit({ email, password });
-      } catch (err) {
-        setFormError(err instanceof Error ? err.message : "An error occurred");
+    try {
+      const response = await fetch("/api/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setFormError(data.message || "An error occurred during sign-in.");
+      } else {
+        // Handle successful sign-in (e.g., redirect to dashboard)
+        console.log("Sign-in successful:", data);
+        // Example: router.push('/dashboard');
       }
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,7 +79,7 @@ export function SignInForm({
               placeholder="Enter your email/User ID"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
+              disabled={loading}
               required
             />
             {/* Password Field */}
@@ -80,7 +98,7 @@ export function SignInForm({
                   )
                 }
                 onIconClick={() => setShowPassword(!showPassword)}
-                disabled={isLoading}
+                disabled={loading}
                 required
               />
               <div className="flex justify-end">
@@ -100,11 +118,11 @@ export function SignInForm({
           <Button
             type="submit"
             variant="default"
-            disabled={isLoading}
+            disabled={loading}
             size="lg"
             className="w-full py-5 text-base font-semibold"
           >
-            {isLoading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
       </div>
