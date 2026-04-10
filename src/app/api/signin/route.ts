@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
 import dbConnect from "@/lib/db";
 import User from "@/lib/models/User";
+import { signAccessToken } from "@/lib/auth";
 
 export async function POST(req: Request) {
   await dbConnect().then(() => {
@@ -32,32 +32,28 @@ export async function POST(req: Request) {
       );
     }
 
-    const accessToken = jwt.sign(
-      {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-      },
-      process.env.JWT_SECRET as string,
-    );
+    const role = user.role === "admin" ? "admin" : "user";
+    const redirectTo =
+      role === "admin" ? "/dashboard/admin" : "/dashboard/student";
+    const accessToken = signAccessToken({
+      id: String(user._id),
+      email: user.email,
+      role,
+    });
 
     // set the access token in a cookie
     (await cookies()).set("accessToken", accessToken, {
       httpOnly: true,
       secure: true,
+      sameSite: "lax",
+      path: "/",
     });
 
-    if (user.role === "admin") {
-      return NextResponse.json({
-        message: "Login successful",
-        redirectTo: "/dashboard/admin",
-      });
-    } else {
-      return NextResponse.json({
-        message: "Login successful",
-        redirectTo: "/dashboard/student",
-      });
-    }
+    return NextResponse.json({
+      message: "Login successful",
+      redirectTo,
+      role,
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 
 interface SignInFormProps {
   isLoading?: boolean;
@@ -47,14 +47,15 @@ export function SignInForm({ isLoading = false, error }: SignInFormProps) {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as {
+        message?: string;
+        redirectTo?: string;
+      };
 
       if (!response.ok) {
         setFormError(data.message || "An error occurred during sign-in.");
       } else {
-        // successful sign-in (redirect to dashboard)
-        console.log("Sign-in successful:", data);
-        router.push(data.redirectTo);
+        router.replace(data.redirectTo || "/");
       }
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "An error occurred");
