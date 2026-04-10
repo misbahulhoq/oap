@@ -9,7 +9,7 @@ These rules define how to translate Figma designs into code for this project and
 - **Framework**: Next.js 16 with React 19 (App Router)
 - **Styling**: Tailwind CSS v4 with CSS variables (oklch color space)
 - **UI Library**: shadcn/ui with "radix-mira" style
-- **Icons**: HugeIcons (`@hugeicons/react`)
+- **Icons**: Lucide Icons (`lucide-react`)
 - **TypeScript**: Strict mode enabled
 
 ## Component Organization
@@ -84,9 +84,9 @@ All design tokens are defined as CSS variables in `src/app/globals.css`:
 ## Icon Usage
 
 - IMPORTANT: DO NOT install new icon libraries
-- Use HugeIcons from `@hugeicons/react` and `@hugeicons/core-free-icons`
+- Use Lucide Icons from `lucide-react`
 - Icons should use size and color props appropriately
-- Example: `<MyIcon size={24} color="currentColor" />`
+- Example: `<MyIcon size={24}  />`
 
 ## Import Conventions
 
