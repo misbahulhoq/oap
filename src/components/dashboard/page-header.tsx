@@ -1,26 +1,27 @@
 "use client";
-import React from "react";
-import SearchBar from "./searchbar";
-import Link from "next/link";
-import { Button } from "../ui/button";
+
 import { usePathname } from "next/navigation";
+import RootHeader from "./root-header";
+import ManageTestHeader from "./manage-test-header";
 
 const DashboardPageHeader = () => {
   const pathName = usePathname();
-  const isAdminPage = pathName.includes("admin");
 
-  return (
-    <header className="mb-8 flex flex-col items-center gap-5 lg:flex-row lg:gap-10">
-      <h2 className="text-3xl font-bold">Online Tests</h2>
-      <SearchBar />
+  // show root header if the url is /dashboard/admin or /dashboard/student
+  const showRootHeader =
+    pathName === "/dashboard/admin" || pathName === "/dashboard/student";
 
-      {isAdminPage && (
-        <Button asChild size={"lg"} className="h-10">
-          <Link href="/dashboard/new-exam">Create Online Test</Link>
-        </Button>
-      )}
-    </header>
-  );
+  // show manage test header if the url is /dashboard/new-exam
+  const showManageTestHeader = pathName === "/dashboard/new-exam";
+
+  if (showRootHeader) {
+    return <RootHeader />;
+  } else if (showManageTestHeader) {
+    return <ManageTestHeader />;
+  } else {
+    // do nothing
+    return null;
+  }
 };
 
 export default DashboardPageHeader;

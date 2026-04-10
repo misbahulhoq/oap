@@ -7,6 +7,24 @@ function resolveAllowedPath(role: "admin" | "user") {
   return role === "admin" ? "/dashboard/admin" : "/dashboard/student";
 }
 
+function canAccessDashboardPath(
+  role: "admin" | "user",
+  pathname: string,
+) {
+  if (!pathname.startsWith("/dashboard")) {
+    return true;
+  }
+
+  if (role === "admin") {
+    return !pathname.startsWith("/dashboard/student");
+  }
+
+  return (
+    !pathname.startsWith("/dashboard/admin") &&
+    !pathname.startsWith("/dashboard/new-exam")
+  );
+}
+
 export async function GET(req: Request) {
   const token = (await cookies()).get("accessToken")?.value;
 
@@ -21,8 +39,7 @@ export async function GET(req: Request) {
     const payload = verifyAccessToken(token);
     const pathname = new URL(req.url).searchParams.get("pathname") || "";
     const allowedPath = resolveAllowedPath(payload.role);
-    const isDashboardPath = pathname.startsWith("/dashboard");
-    const isAllowedPath = !isDashboardPath || pathname.startsWith(allowedPath);
+    const isAllowedPath = canAccessDashboardPath(payload.role, pathname);
 
     if (!isAllowedPath) {
       return NextResponse.json(
