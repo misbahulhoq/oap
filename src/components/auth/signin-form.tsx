@@ -4,16 +4,15 @@ import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 interface SignInFormProps {
   isLoading?: boolean;
   error?: string;
 }
 
-export function SignInForm({
-  isLoading = false,
-  error,
-}: SignInFormProps) {
+export function SignInForm({ isLoading = false, error }: SignInFormProps) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -53,9 +52,9 @@ export function SignInForm({
       if (!response.ok) {
         setFormError(data.message || "An error occurred during sign-in.");
       } else {
-        // Handle successful sign-in (e.g., redirect to dashboard)
+        // successful sign-in (redirect to dashboard)
         console.log("Sign-in successful:", data);
-        // Example: router.push('/dashboard');
+        router.push(data.redirectTo);
       }
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "An error occurred");
