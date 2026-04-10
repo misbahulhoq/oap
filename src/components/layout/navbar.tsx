@@ -11,8 +11,7 @@ export function Navbar({ className }: NavbarProps) {
       className={cn(
         "relative flex h-20 w-full items-center bg-background px-20",
         "shadow-[0px_79px_128px_0px_rgba(192,192,192,0.09),0px_28.836px_46.722px_0px_rgba(192,192,192,0.06),0px_13.999px_22.683px_0px_rgba(192,192,192,0.05),0px_6.863px_11.119px_0px_rgba(192,192,192,0.04),0px_2.714px_4.397px_0px_rgba(192,192,192,0.03)]",
-        "dark:shadow-[0px_79px_128px_0px_rgba(0,0,0,0.2),0px_28.836px_46.722px_0px_rgba(0,0,0,0.15),0px_13.999px_22.683px_0px_rgba(0,0,0,0.12),0px_6.863px_11.119px_0px_rgba(0,0,0,0.1),0px_2.714px_4.397px_0px_rgba(0,0,0,0.08)]",
-        className
+        className,
       )}
       data-slot="navbar"
     >

@@ -9,14 +9,14 @@ export function Footer({ className }: FooterProps) {
   return (
     <footer
       className={cn(
-        "flex items-center justify-between bg-[#130b2c] px-20 py-6",
-        "shadow-[0px_79px_128px_0px_rgba(192,192,192,0.09),0px_28.836px_46.722px_0px_rgba(192,192,192,0.06),0px_13.999px_22.683px_0px_rgba(192,192,192,0.05),0px_6.863px_11.119px_0px_rgba(192,192,192,0.04),0px_2.714px_4.397px_0px_rgba(192,192,192,0.03)]",
+        "flex items-center justify-between bg-sidebar-foreground text-sidebar px-20 py-6",
+        className,
       )}
       data-slot="footer"
     >
       {/* Powered By Section */}
       <div className="flex items-center gap-2">
-        <span className="text-xl text-white">Powered by</span>
+        <span className="text-xl ">Powered by</span>
         <div className="relative h-8 w-[116px]">
           <Image
             src="/assets/akij-resource.svg"
@@ -29,7 +29,7 @@ export function Footer({ className }: FooterProps) {
 
       {/* Helpline Section */}
       <div className="flex items-center gap-4">
-        <span className="text-base font-medium text-white">Helpline</span>
+        <span className="text-base font-medium ">Helpline</span>
 
         {/* Phone */}
         <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ export function Footer({ className }: FooterProps) {
               aria-hidden="true"
             />
           </div>
-          <span className="text-base text-white">+88 011020202505</span>
+          <span className="text-base">+88 011020202505</span>
         </div>
 
         {/* Email */}
@@ -56,7 +56,7 @@ export function Footer({ className }: FooterProps) {
               aria-hidden="true"
             />
           </div>
-          <span className="text-base text-white">support@akij.work</span>
+          <span className="text-base ">support@akij.work</span>
         </div>
       </div>
     </footer>
