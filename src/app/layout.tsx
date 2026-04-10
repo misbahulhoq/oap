@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -34,12 +35,14 @@ export default function RootLayout({
         geistSans.variable,
         geistMono.variable,
         dmSans.variable,
-        "font-sans"
+        "font-sans",
       )}
     >
       <body className="flex min-h-full flex-col">
         <Navbar />
         <main className="flex flex-1 flex-col">{children}</main>
+
+        <Footer />
       </body>
     </html>
   );
