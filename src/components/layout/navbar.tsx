@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface NavbarProps {
   className?: string;
@@ -16,7 +17,7 @@ export function Navbar({ className }: NavbarProps) {
       data-slot="navbar"
     >
       {/* Logo */}
-      <div className="relative h-8 w-[116px]">
+      <Link href={"/"} className="relative h-8 w-[116px]">
         <Image
           src="/assets/logo.svg"
           alt="Akij Resource Logo"
@@ -24,7 +25,7 @@ export function Navbar({ className }: NavbarProps) {
           className="object-contain"
           priority
         />
-      </div>
+      </Link>
 
       {/* Centered Title */}
       <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl font-semibold text-foreground">

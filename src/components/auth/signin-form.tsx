@@ -84,12 +84,9 @@ export function SignInForm({
                 required
               />
               <div className="flex justify-end">
-                <a
-                  href="/forgot-password"
-                  className="text-sm font-medium text-foreground hover:underline"
-                >
+                <span className="text-sm font-medium text-foreground">
                   Forgot Password?
-                </a>
+                </span>
               </div>
             </div>
           </div>
