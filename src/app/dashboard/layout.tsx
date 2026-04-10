@@ -2,6 +2,7 @@
 
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
+import DashboardPageHeader from "@/components/dashboard/page-header";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -55,7 +56,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return null;
   }
 
-  return <div>{children}</div>;
+  return (
+    <div className="px-5 py-5 xl:px-8 xl:py-10">
+      <DashboardPageHeader />
+      {children}
+    </div>
+  );
 };
 
 export default DashboardLayout;
