@@ -13,9 +13,9 @@ if (!JWT_SECRET) {
 }
 
 export function signAccessToken(payload: AuthTokenPayload) {
-  return jwt.sign(payload, JWT_SECRET);
+  return jwt.sign(payload, JWT_SECRET as string);
 }
 
 export function verifyAccessToken(token: string) {
-  return jwt.verify(token, JWT_SECRET) as AuthTokenPayload;
+  return jwt.verify(token, JWT_SECRET as string) as AuthTokenPayload;
 }
