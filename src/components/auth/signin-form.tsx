@@ -47,13 +47,13 @@ export function SignInForm({
   };
 
   return (
-    <section className="w-full">
-      <h2 className="text-center mb-6 px-3 text-2xl font-semibold">Sign In</h2>
+    <section className="w-full px-5">
+      <h2 className="mb-6 px-3 text-center text-2xl font-semibold">Sign In</h2>
 
-      <div className=" max-w-md mx-auto rounded-2xl border border-border p-8">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-10 w-full">
+      <div className="border-border mx-auto max-w-md rounded-2xl border p-8 px-5">
+        <form onSubmit={handleSubmit} className="flex w-full flex-col gap-10">
           {/* Form Fields */}
-          <div className="flex flex-col gap-6 w-full">
+          <div className="flex w-full flex-col gap-6">
             {/* Email/User ID Field */}
             <Input
               type="text"
@@ -65,7 +65,7 @@ export function SignInForm({
               required
             />
             {/* Password Field */}
-            <div className="flex flex-col gap-2 w-full">
+            <div className="flex w-full flex-col gap-2">
               <Input
                 type={showPassword ? "text" : "password"}
                 label="Password"
@@ -84,7 +84,7 @@ export function SignInForm({
                 required
               />
               <div className="flex justify-end">
-                <span className="text-sm font-medium text-foreground">
+                <span className="text-foreground text-sm font-medium">
                   Forgot Password?
                 </span>
               </div>
@@ -92,7 +92,7 @@ export function SignInForm({
           </div>
           {/* Error Message */}
           {formError && (
-            <div className="rounded-lg bg-destructive/10 p-3 text-sm font-medium text-destructive">
+            <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm font-medium">
               {formError}
             </div>
           )}
@@ -102,7 +102,7 @@ export function SignInForm({
             variant="default"
             disabled={isLoading}
             size="lg"
-            className="w-full text-base font-semibold py-5"
+            className="w-full py-5 text-base font-semibold"
           >
             {isLoading ? "Signing in..." : "Sign In"}
           </Button>

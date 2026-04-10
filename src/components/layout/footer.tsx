@@ -9,14 +9,15 @@ export function Footer({ className }: FooterProps) {
   return (
     <footer
       className={cn(
-        "flex items-center justify-between bg-sidebar-foreground text-sidebar px-20 py-6",
+        "bg-sidebar-foreground text-sidebar flex flex-col px-8 py-6 md:flex-row md:items-center md:justify-between xl:px-20",
         className,
       )}
       data-slot="footer"
     >
       {/* Powered By Section */}
-      <div className="flex items-center gap-2">
-        <span className="text-xl ">Powered by</span>
+      <div className="mb-10 flex flex-col gap-2 md:mb-0 md:flex-row md:items-center">
+        <span className="text-xl">Powered by</span>
+
         <div className="relative h-8 w-[116px]">
           <Image
             src="/assets/akij-resource.svg"
@@ -28,8 +29,8 @@ export function Footer({ className }: FooterProps) {
       </div>
 
       {/* Helpline Section */}
-      <div className="flex items-center gap-4">
-        <span className="text-base font-medium ">Helpline</span>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center">
+        <span className="text-base font-medium">Helpline</span>
 
         {/* Phone */}
         <div className="flex items-center gap-2">
@@ -42,7 +43,9 @@ export function Footer({ className }: FooterProps) {
               aria-hidden="true"
             />
           </div>
-          <span className="text-base">+88 011020202505</span>
+          <a href="tel:+88011020202505" className="text-base">
+            +88 011020202505
+          </a>
         </div>
 
         {/* Email */}
@@ -56,7 +59,9 @@ export function Footer({ className }: FooterProps) {
               aria-hidden="true"
             />
           </div>
-          <span className="text-base ">support@akij.work</span>
+          <a href="mailto:support@akij.work" className="text-base">
+            support@akij.work
+          </a>
         </div>
       </div>
     </footer>
