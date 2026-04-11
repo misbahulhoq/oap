@@ -1,16 +1,12 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  reactCompiler: true,
+  allowedDevOrigins: ["192.168.31.27"],
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  turbopack: {
-    root: path.join(__dirname, ".."),
-  },
-  allowedDevOrigins: ["192.168.31.27"],
+  reactCompiler: true,
 };
 
 export default nextConfig;

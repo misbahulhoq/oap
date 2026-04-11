@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { parse } from "path";
 
 const formSchema = z
   .object({
@@ -78,7 +77,7 @@ export default function ExamInfo() {
   }
 
   return (
-    <Card className="mx-auto w-full max-w-5xl rounded-xl border-slate-100 p-8 shadow-sm">
+    <Card className="mx-auto mt-4 w-full max-w-5xl rounded-xl border-slate-100 p-8 shadow-sm">
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-slate-800">
           Basic Information
@@ -167,16 +166,18 @@ export default function ExamInfo() {
                   <SelectTrigger
                     id={`select-${field.name}`}
                     aria-invalid={fieldState.invalid}
-                    className="h-11 border-slate-200 text-slate-500"
+                    className="h-10! border-slate-200 text-slate-500"
                   >
                     <SelectValue placeholder="Select total slots" />
                   </SelectTrigger>
+
                   <SelectContent>
                     <SelectItem value="1">1 Slot</SelectItem>
                     <SelectItem value="2">2 Slots</SelectItem>
                     <SelectItem value="3">3 Slots</SelectItem>
                   </SelectContent>
                 </Select>
+
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -198,23 +199,14 @@ export default function ExamInfo() {
                 >
                   Total Question Set <span className="text-red-500">*</span>
                 </FieldLabel>
-                <Select
-                  name={field.name}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger
-                    id={`select-${field.name}`}
-                    aria-invalid={fieldState.invalid}
-                    className="h-11 border-slate-200 text-slate-500"
-                  >
-                    <SelectValue placeholder="Select total question set" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="set-a">Set A</SelectItem>
-                    <SelectItem value="set-b">Set B</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Input
+                  {...field}
+                  id={field.name}
+                  type="number"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Enter total candidates"
+                  className="h-11 border-slate-200"
+                />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -244,7 +236,7 @@ export default function ExamInfo() {
                   <SelectTrigger
                     id={`select-${field.name}`}
                     aria-invalid={fieldState.invalid}
-                    className="h-11 border-slate-200 text-slate-500"
+                    className="h-10! border-slate-200 text-slate-500"
                   >
                     <SelectValue placeholder="Select question type" />
                   </SelectTrigger>
@@ -356,7 +348,7 @@ export default function ExamInfo() {
                   htmlFor={field.name}
                   className="mb-2 block font-semibold text-slate-700"
                 >
-                  Duration
+                  Duration <span>*</span>
                 </FieldLabel>
                 <Input
                   type="number"
