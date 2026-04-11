@@ -32,9 +32,9 @@ export const RichEditor = ({
   if (!editor) return null;
 
   return (
-    <div className="overflow-hidden rounded-lg border border-slate-200 bg-white transition-all focus-within:ring-1 focus-within:ring-violet-500">
+    <div className="border-foreground/15 overflow-hidden rounded-lg border bg-white transition-all focus-within:ring-1 focus-within:ring-violet-500">
       {/* Toolbar */}
-      <div className="flex items-center gap-1 border-b border-slate-100 bg-slate-50/50 p-2">
+      <div className="border-foreground/15 flex items-center gap-1 border-b bg-slate-50/50 p-2">
         <button
           type="button"
           onClick={() => editor.chain().focus().undo().run()}
@@ -79,7 +79,8 @@ export const RichEditor = ({
           <Italic className="h-4 w-4 text-slate-600" />
         </button>
       </div>
-      <EditorContent editor={editor} />
+
+      <EditorContent editor={editor} placeholder={placeholder} />
     </div>
   );
 };

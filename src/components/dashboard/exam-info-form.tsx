@@ -45,7 +45,6 @@ export default function ExamInfoForm() {
   const setExamInfoEditing = useManageExamStore(
     (state) => state.setIsExamInfoEditing,
   );
-  console.log({ examInfo, bool: Boolean(examInfo) });
 
   const form = useForm<z.infer<typeof basicFormSchema>>({
     resolver: zodResolver(basicFormSchema),

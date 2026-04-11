@@ -1,16 +1,14 @@
-// components/QuestionBuilder.tsx
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Plus, Trash2, X } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -49,20 +47,21 @@ type QuestionFormValues = z.infer<typeof questionSchema>;
 export default function QuestionBuilder() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { control, handleSubmit, watch, setValue, reset } =
-    useForm<QuestionFormValues>({
-      resolver: zodResolver(questionSchema),
-      defaultValues: {
-        type: "Checkbox",
-        score: "1",
-        questionBody: "",
-        options: [
-          { content: "", isCorrect: false },
-          { content: "", isCorrect: false },
-          { content: "", isCorrect: false },
-        ],
-      },
-    });
+  const form = useForm<QuestionFormValues>({
+    resolver: zodResolver(questionSchema),
+    defaultValues: {
+      type: "Checkbox",
+      score: "1",
+      questionBody: "",
+      options: [
+        { content: "", isCorrect: false },
+        { content: "", isCorrect: false },
+        { content: "", isCorrect: false },
+      ],
+    },
+  });
+
+  const { control, handleSubmit, watch, setValue, reset } = form;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -70,6 +69,7 @@ export default function QuestionBuilder() {
   });
 
   const currentType = watch("type");
+  const options = watch("options") || [];
 
   const handleTypeChange = (val: QuestionType) => {
     setValue("type", val);
@@ -80,14 +80,14 @@ export default function QuestionBuilder() {
     }
   };
 
-  const onSubmit = (data: QuestionFormValues) => {
+  const onSubmit = (data: z.infer<typeof questionSchema>) => {
     console.log("Saved Question:", data);
     setIsOpen(false);
     reset();
   };
 
   return (
-    <div className="p-8">
+    <div className="w-full p-8">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
@@ -98,8 +98,12 @@ export default function QuestionBuilder() {
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="max-h-[90vh] overflow-y-auto rounded-xl border-none p-0">
-          <DialogTitle>Add Question</DialogTitle>
+        <DialogContent
+          className="max-h-[90vh] max-w-[90%]! overflow-y-auto rounded-xl border-none p-0"
+          aria-describedby="Add Question Dialog"
+        >
+          <DialogTitle className="sr-only">Add Question</DialogTitle>
+
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-6">
             {/* Header Section */}
             <div className="flex items-center justify-between gap-4">
@@ -154,7 +158,11 @@ export default function QuestionBuilder() {
               name="questionBody"
               control={control}
               render={({ field }) => (
-                <RichEditor content={field.value} onChange={field.onChange} />
+                <RichEditor
+                  content={field.value}
+                  onChange={field.onChange}
+                  placeholder="Enter your question here."
+                />
               )}
             />
 
@@ -171,48 +179,49 @@ export default function QuestionBuilder() {
                         </div>
 
                         {/* Correct Answer Toggle */}
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-1 flex-row items-center gap-2">
                           {currentType === "Checkbox" ? (
                             <Controller
                               name={`options.${index}.isCorrect`}
                               control={control}
-                              render={({ field: checkField }) => (
-                                <Checkbox
-                                  id={`correct-${index}`}
-                                  checked={checkField.value}
-                                  onCheckedChange={checkField.onChange}
-                                  className="border-slate-300 data-[state=checked]:border-violet-600 data-[state=checked]:bg-violet-600"
-                                />
-                              )}
+                              render={({ field: checkField }) => {
+                                return (
+                                  <Checkbox
+                                    id={`correct-${index}`}
+                                    checked={checkField.value}
+                                    onCheckedChange={checkField.onChange}
+                                    className="border-slate-300 data-[state=checked]:border-violet-600 data-[state=checked]:bg-violet-600"
+                                  />
+                                );
+                              }}
                             />
                           ) : (
-                            <Controller
-                              name="options" // Radio logic: ensure only one isCorrect
-                              control={control}
-                              render={({ field: optionsField }) => (
-                                <RadioGroup
-                                  value={optionsField.value
-                                    .findIndex((o) => o.isCorrect)
-                                    .toString()}
-                                  onValueChange={(val) => {
-                                    const updated = optionsField.value.map(
-                                      (opt, i) => ({
-                                        ...opt,
-                                        isCorrect: i === parseInt(val),
-                                      }),
-                                    );
-                                    setValue("options", updated);
-                                  }}
+                            <RadioGroup
+                              value={options
+                                .findIndex((o) => o.isCorrect)
+                                ?.toString()}
+                              onValueChange={(val) => {
+                                const updated = options.map((opt, i) => ({
+                                  ...opt,
+                                  isCorrect: i === Number(val),
+                                }));
+                                setValue("options", updated);
+                              }}
+                            >
+                              {fields.map((field, index) => (
+                                <div
+                                  key={field.id}
+                                  className="group relative space-y-2"
                                 >
                                   <RadioGroupItem
-                                    value={index.toString()}
                                     id={`correct-${index}`}
-                                    className="border-slate-300 text-violet-600"
+                                    value={index.toString()}
                                   />
-                                </RadioGroup>
-                              )}
-                            />
+                                </div>
+                              ))}
+                            </RadioGroup>
                           )}
+
                           <label
                             htmlFor={`correct-${index}`}
                             className="cursor-pointer text-xs font-medium text-slate-500"
@@ -237,7 +246,7 @@ export default function QuestionBuilder() {
                       control={control}
                       render={({ field: optionField }) => (
                         <RichEditor
-                          content={optionField.value}
+                          content={optionField.value || ""}
                           onChange={optionField.onChange}
                         />
                       )}
@@ -261,15 +270,13 @@ export default function QuestionBuilder() {
               <Button
                 type="button"
                 variant="outline"
-                className="w-32 border-violet-200 text-violet-600 hover:bg-violet-50"
+                className="border-primary text-primary w-24"
                 onClick={() => setIsOpen(false)}
               >
                 Save
               </Button>
-              <Button
-                type="submit"
-                className="w-48 bg-violet-600 text-white hover:bg-violet-700"
-              >
+
+              <Button type="submit" className="w-32">
                 Save & Add More
               </Button>
             </div>
