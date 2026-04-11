@@ -3,6 +3,7 @@ import { Pencil } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useManageExamStore } from "@/stores/manage-exam-store";
+import Link from "next/link";
 
 export default function ExamInfoCard() {
   const removeExamInfo = useManageExamStore((state) => state.removeExamInfo);
@@ -101,7 +102,9 @@ export default function ExamInfoCard() {
           Cancel
         </Button>
 
-        <Button className="w-28">Save & Continue</Button>
+        <Button className="w-28" asChild>
+          <Link href="/dashboard/add-questions">Save & Continue</Link>
+        </Button>
       </Card>
     </div>
   );

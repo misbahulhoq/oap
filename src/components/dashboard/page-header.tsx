@@ -12,7 +12,9 @@ const DashboardPageHeader = () => {
     pathName === "/dashboard/admin" || pathName === "/dashboard/student";
 
   // show manage test header if the url is /dashboard/new-exam
-  const showManageTestHeader = pathName === "/dashboard/new-exam";
+  const showManageTestHeader =
+    pathName === "/dashboard/new-exam" ||
+    pathName === "/dashboard/add-questions";
 
   if (showRootHeader) {
     return <RootHeader />;

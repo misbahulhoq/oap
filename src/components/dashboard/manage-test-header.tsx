@@ -1,9 +1,14 @@
-import React from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function ManageTestHeader() {
+  const pathName = usePathname();
+
   return (
     <Card className="mx-auto mb-4 flex w-full max-w-6xl flex-row items-center justify-between rounded-xl p-6 shadow-sm">
       {/* Left Section: Title and Stepper */}
@@ -14,28 +19,18 @@ export default function ManageTestHeader() {
 
         {/* Stepper */}
         <div className="flex items-center gap-4">
-          {/* Active Step 1 */}
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">
-              1
-            </div>
-            <span className="text-sm font-medium text-violet-600">
-              Basic Info
-            </span>
-          </div>
+          {/*  Step 1 */}
+          <Step isActive={true} serial={1} label="Basic Info" />
 
           {/* Divider Line */}
           <div className="h-px w-20 rounded-full bg-slate-300"></div>
 
-          {/* Inactive Step 2 */}
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-500">
-              2
-            </div>
-            <span className="text-sm font-medium text-slate-500">
-              Questions
-            </span>
-          </div>
+          {/*  Step 2 */}
+          <Step
+            isActive={pathName === "/dashboard/add-questions"}
+            serial={2}
+            label="Questions"
+          />
         </div>
       </div>
 
@@ -46,5 +41,34 @@ export default function ManageTestHeader() {
         </Button>
       </div>
     </Card>
+  );
+}
+
+function Step({
+  isActive,
+  serial,
+  label,
+}: {
+  serial: number;
+  isActive: boolean;
+  label: string;
+}) {
+  if (isActive)
+    return (
+      <div className="flex items-center gap-2">
+        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">
+          {serial}
+        </div>
+        <span className="text-sm font-medium text-violet-600">{label}</span>
+      </div>
+    );
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-500">
+        {serial}
+      </div>
+      <span className="text-sm font-medium text-slate-500">{label}</span>
+    </div>
   );
 }
