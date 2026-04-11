@@ -77,11 +77,9 @@ export default function ExamInfo() {
   }
 
   return (
-    <Card className="mx-auto mt-4 w-full max-w-5xl rounded-xl border-slate-100 p-8 shadow-sm">
+    <Card className="mx-auto mt-4 w-full max-w-5xl rounded-xl p-8 shadow-sm">
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-slate-800">
-          Basic Information
-        </h2>
+        <h2 className="text-lg font-semibold">Basic Information</h2>
       </div>
 
       <form
@@ -97,16 +95,16 @@ export default function ExamInfo() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor={field.name}
-                  className="mb-2 block font-semibold text-slate-700"
+                  className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  Online Test Title <span className="text-red-500">*</span>
+                  Online Test Title <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Input
                   {...field}
                   id={field.name}
                   aria-invalid={fieldState.invalid}
                   placeholder="Enter online test title"
-                  className="h-11 border-slate-200"
+                  className="h-11"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -125,9 +123,9 @@ export default function ExamInfo() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor={field.name}
-                  className="mb-2 block font-semibold text-slate-700"
+                  className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  Total Candidates <span className="text-red-500">*</span>
+                  Total Candidates <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Input
                   {...field}
@@ -135,7 +133,7 @@ export default function ExamInfo() {
                   type="number"
                   aria-invalid={fieldState.invalid}
                   placeholder="Enter total candidates"
-                  className="h-11 border-slate-200"
+                  className="h-11"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -154,9 +152,9 @@ export default function ExamInfo() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor={`select-${field.name}`}
-                  className="mb-2 block font-semibold text-slate-700"
+                  className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  Total Slots <span className="text-red-500">*</span>
+                  Total Slots <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Select
                   name={field.name}
@@ -166,7 +164,7 @@ export default function ExamInfo() {
                   <SelectTrigger
                     id={`select-${field.name}`}
                     aria-invalid={fieldState.invalid}
-                    className="h-10! border-slate-200 text-slate-500"
+                    className="h-10!"
                   >
                     <SelectValue placeholder="Select total slots" />
                   </SelectTrigger>
@@ -195,9 +193,9 @@ export default function ExamInfo() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor={`select-${field.name}`}
-                  className="mb-2 block font-semibold text-slate-700"
+                  className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  Total Question Set <span className="text-red-500">*</span>
+                  Total Question Set <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Input
                   {...field}
@@ -205,7 +203,7 @@ export default function ExamInfo() {
                   type="number"
                   aria-invalid={fieldState.invalid}
                   placeholder="Enter total candidates"
-                  className="h-11 border-slate-200"
+                  className="h-11"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -224,9 +222,9 @@ export default function ExamInfo() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor={`select-${field.name}`}
-                  className="mb-2 block font-semibold text-slate-700"
+                  className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  Question Type <span className="text-red-500">*</span>
+                  Question Type <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Select
                   name={field.name}
@@ -236,7 +234,7 @@ export default function ExamInfo() {
                   <SelectTrigger
                     id={`select-${field.name}`}
                     aria-invalid={fieldState.invalid}
-                    className="h-10! border-slate-200 text-slate-500"
+                    className="h-10!"
                   >
                     <SelectValue placeholder="Select question type" />
                   </SelectTrigger>
@@ -262,16 +260,16 @@ export default function ExamInfo() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor={field.name}
-                  className="mb-2 block font-semibold text-slate-700"
+                  className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  Start Time <span className="text-red-500">*</span>
+                  Start Time <span className="text-destructive">*</span>
                 </FieldLabel>
                 <div className="relative">
                   <Input
                     id={field.name}
                     type="datetime-local"
                     aria-invalid={fieldState.invalid}
-                    className="h-11 border-slate-200 pr-10"
+                    className="h-11 pr-10"
                     // Convert Date → string for the input's value
                     value={
                       field.value instanceof Date
@@ -305,16 +303,17 @@ export default function ExamInfo() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor={field.name}
-                  className="mb-2 block font-semibold text-slate-700"
+                  className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  End Time <span className="text-red-500">*</span>
+                  End Time <span className="text-destructive">*</span>
                 </FieldLabel>
+
                 <div className="relative">
                   <Input
                     id={field.name}
                     type="datetime-local"
                     aria-invalid={fieldState.invalid}
-                    className="h-11 border-slate-200 pr-10"
+                    className="h-11 pr-10"
                     value={
                       field.value instanceof Date
                         ? field.value.toISOString().slice(0, 16)
@@ -346,9 +345,9 @@ export default function ExamInfo() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel
                   htmlFor={field.name}
-                  className="mb-2 block font-semibold text-slate-700"
+                  className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  Duration <span>*</span>
+                  Duration <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Input
                   type="number"
@@ -356,7 +355,7 @@ export default function ExamInfo() {
                   aria-invalid={fieldState.invalid}
                   value={field.value || ""}
                   placeholder="Duration Time"
-                  className="h-11 border-slate-200 bg-slate-50/50"
+                  className="h-11 bg-slate-50/50"
                   onChange={(e) =>
                     field.onChange(
                       e.target.value ? parseInt(e.target.value) : undefined,
