@@ -4,7 +4,7 @@ A simplified online assessment application built to demonstrate advanced fronten
 
 ## 🔗 Project Links
 
-- **Live Demo:** [Insert Live Demo URL Here]
+- **Live Demo:** https://oap-kappa.vercel.app
 - **Video Walkthrough:** [Insert Video Link Here]
 - **Figma Design Reference:** [Insert Figma Link Here]
 
