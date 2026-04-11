@@ -56,10 +56,10 @@ function Step({
   if (isActive)
     return (
       <div className="flex items-center gap-2">
-        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">
+        <div className="bg-primary flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold text-white">
           {serial}
         </div>
-        <span className="text-sm font-medium text-violet-600">{label}</span>
+        <span className="text-primary text-sm font-medium">{label}</span>
       </div>
     );
 

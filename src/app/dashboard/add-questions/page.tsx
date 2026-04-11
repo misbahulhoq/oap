@@ -1,7 +1,8 @@
+import QuestionBuilder from "@/components/dashboard/question-builder";
 import React from "react";
 
-const page = () => {
-  return <div>page</div>;
+const AddQuestionPage = () => {
+  return <QuestionBuilder />;
 };
 
-export default page;
+export default AddQuestionPage;
