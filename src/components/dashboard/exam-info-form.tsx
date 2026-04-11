@@ -15,8 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useManageExamStore } from "@/stores/manage-exam-store";
 
-const formSchema = z
+export const basicFormSchema = z
   .object({
     title: z.string().min(1, "Test title is required"),
     candidates: z.string().min(1, "Total candidates is required"),
@@ -57,9 +58,9 @@ const formSchema = z
     }
   });
 
-export default function ExamInfo() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export default function ExamInfoForm() {
+  const form = useForm<z.infer<typeof basicFormSchema>>({
+    resolver: zodResolver(basicFormSchema),
     defaultValues: {
       title: "",
       candidates: "",
@@ -72,8 +73,10 @@ export default function ExamInfo() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+  const setExamInfo = useManageExamStore((state) => state.setExamInfo);
+
+  function onSubmit(data: z.infer<typeof basicFormSchema>) {
+    setExamInfo(data);
   }
 
   return (
@@ -347,7 +350,7 @@ export default function ExamInfo() {
                   htmlFor={field.name}
                   className="text-foreground/80 mb-2 block font-semibold"
                 >
-                  Duration <span className="text-destructive">*</span>
+                  Duration (minutes) <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Input
                   type="number"
@@ -373,9 +376,19 @@ export default function ExamInfo() {
         </div>
 
         {/* Row 5: Submit */}
-        <div className="col-span-1 md:col-span-10">
-          <Button type="submit" className="w-full">
-            Submit
+        <div className="col-span-1 flex justify-between md:col-span-10">
+          <Button
+            type="reset"
+            variant="outline"
+            className="w-[100px]"
+            onClick={() => {
+              form.reset();
+            }}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" className="w-[100px]">
+            Save
           </Button>
         </div>
       </form>

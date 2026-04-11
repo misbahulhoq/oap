@@ -1,10 +1,12 @@
+"use client";
+
 import React from "react";
-import ExamInfo from "@/components/dashboard/exam-info";
+import ExamInfoForm from "@/components/dashboard/exam-info-form";
 
 const NewExamPage = () => {
   return (
     <div>
-      <ExamInfo />
+      <ExamInfoForm />
     </div>
   );
 };
