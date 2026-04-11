@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function ManageTestHeader() {
   return (
-    <Card className="mx-auto flex w-full max-w-6xl flex-row items-center justify-between rounded-xl p-6 shadow-sm">
+    <Card className="mx-auto mb-4 flex w-full max-w-6xl flex-row items-center justify-between rounded-xl p-6 shadow-sm">
       {/* Left Section: Title and Stepper */}
       <div className="flex flex-col gap-5">
         <h1 className="text-xl font-semibold text-slate-800">

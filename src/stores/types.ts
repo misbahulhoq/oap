@@ -10,9 +10,12 @@ type Question = {
 
 export type ManageExamStore = {
   examInfo: z.infer<typeof basicFormSchema> | null;
+  isExamInfoEditing: boolean;
   questions: Question[];
 
-  setExamInfo: (data: z.infer<typeof basicFormSchema>) => void;
+  setExamInfo: (data: z.infer<typeof basicFormSchema> | null) => void;
+  setIsExamInfoEditing: (value: boolean) => void;
+  removeExamInfo: () => void;
   addQuestion: (question: Question) => void;
   setQuestions: (questions: Question[]) => void;
   clearExamStore: () => void;

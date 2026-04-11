@@ -2,13 +2,20 @@
 
 import React from "react";
 import ExamInfoForm from "@/components/dashboard/exam-info-form";
+import { useManageExamStore } from "@/stores/manage-exam-store";
+import ExamInfoCard from "@/components/dashboard/exam-info-card";
 
 const NewExamPage = () => {
-  return (
-    <div>
-      <ExamInfoForm />
-    </div>
+  const examInfo = useManageExamStore((state) => state.examInfo);
+  const isExamInfoEditing = useManageExamStore(
+    (state) => state.isExamInfoEditing,
   );
+
+  if (examInfo && !isExamInfoEditing) {
+    return <ExamInfoCard />;
+  }
+
+  return <ExamInfoForm />;
 };
 
 export default NewExamPage;

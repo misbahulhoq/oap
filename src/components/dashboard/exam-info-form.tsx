@@ -17,70 +17,48 @@ import {
 } from "@/components/ui/select";
 import { useManageExamStore } from "@/stores/manage-exam-store";
 
-export const basicFormSchema = z
-  .object({
-    title: z.string().min(1, "Test title is required"),
-    candidates: z.string().min(1, "Total candidates is required"),
-    slots: z.string().min(1, "Slots are required"),
-    questionSet: z.string().min(1, "Question set is required"),
-    questionType: z.string().min(1, "Question type is required"),
-    startTime: z.date().optional(),
-    endTime: z.date().optional(),
-    duration: z.number().optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (!data.duration) {
-      ctx.addIssue({
-        path: ["duration"],
-        code: z.ZodIssueCode.custom,
-        message: "Duration is required",
-      });
-    }
-    if (!data.startTime) {
-      ctx.addIssue({
-        path: ["startTime"],
-        code: z.ZodIssueCode.custom,
-        message: "Start time is required",
-      });
-    }
-    if (!data.endTime) {
-      ctx.addIssue({
-        path: ["endTime"],
-        code: z.ZodIssueCode.custom,
-        message: "End time is required",
-      });
-    } else if (data.endTime <= new Date(Date.now() + 60000)) {
-      ctx.addIssue({
-        path: ["endTime"],
-        code: z.ZodIssueCode.custom,
-        message: "End time must be in the future",
-      });
-    }
-  });
+export const basicFormSchema = z.object({
+  title: z.string().min(1, "Test title is required"),
+  candidates: z.string().min(1, "Total candidates is required"),
+  slots: z.string().min(1, "Slots are required"),
+  questionSet: z.string().min(1, "Question set is required"),
+  questionType: z.string().min(1, "Question type is required"),
+  startTime: z.date().optional(),
+  endTime: z.date().optional(),
+  duration: z.string().min(1, "Duration is required"),
+});
+
+const emptyDefaultValues = {
+  title: "",
+  candidates: "",
+  slots: "",
+  questionSet: "",
+  questionType: "",
+  startTime: new Date(Date.now()),
+  endTime: new Date(Date.now() + 20000000),
+  duration: "",
+};
 
 export default function ExamInfoForm() {
+  const examInfo = useManageExamStore((state) => state.examInfo);
+  const setExamInfo = useManageExamStore((state) => state.setExamInfo);
+  const setExamInfoEditing = useManageExamStore(
+    (state) => state.setIsExamInfoEditing,
+  );
+  console.log({ examInfo, bool: Boolean(examInfo) });
+
   const form = useForm<z.infer<typeof basicFormSchema>>({
     resolver: zodResolver(basicFormSchema),
-    defaultValues: {
-      title: "",
-      candidates: "",
-      slots: "",
-      questionSet: "",
-      questionType: "",
-      startTime: undefined,
-      endTime: undefined,
-      duration: undefined,
-    },
+    defaultValues: examInfo || emptyDefaultValues,
   });
-
-  const setExamInfo = useManageExamStore((state) => state.setExamInfo);
 
   function onSubmit(data: z.infer<typeof basicFormSchema>) {
     setExamInfo(data);
+    setExamInfoEditing(false);
   }
 
   return (
-    <Card className="mx-auto mt-4 w-full max-w-5xl rounded-xl p-8 shadow-sm">
+    <Card className="mx-auto w-full max-w-5xl rounded-xl p-8 shadow-sm">
       <div className="mb-6">
         <h2 className="text-lg font-semibold">Basic Information</h2>
       </div>
@@ -259,41 +237,45 @@ export default function ExamInfoForm() {
           <Controller
             name="startTime"
             control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-foreground/80 mb-2 block font-semibold"
-                >
-                  Start Time <span className="text-destructive">*</span>
-                </FieldLabel>
-                <div className="relative">
-                  <Input
-                    id={field.name}
-                    type="datetime-local"
-                    aria-invalid={fieldState.invalid}
-                    className="h-11 pr-10"
-                    // Convert Date → string for the input's value
-                    value={
-                      field.value instanceof Date
-                        ? field.value.toISOString().slice(0, 16)
-                        : ""
-                    }
-                    // Convert string → Date before storing in RHF
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value ? new Date(e.target.value) : undefined,
-                      )
-                    }
-                    onBlur={field.onBlur}
-                    ref={field.ref}
-                  />
-                </div>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
+            render={({ field, fieldState }) => {
+              return (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel
+                    htmlFor={field.name}
+                    className="text-foreground/80 mb-2 block font-semibold"
+                  >
+                    Start Time <span className="text-destructive">*</span>
+                  </FieldLabel>
+                  <div className="relative">
+                    <Input
+                      id={field.name}
+                      type="datetime-local"
+                      aria-invalid={fieldState.invalid}
+                      className="h-11 pr-10"
+                      // Convert Date → string for the input's value
+                      value={
+                        field.value instanceof Date
+                          ? field.value.toISOString().slice(0, 16)
+                          : typeof field.value === "string"
+                            ? (field.value as string).slice(0, 16)
+                            : ""
+                      }
+                      // Convert string → Date before storing in RHF
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value ? new Date(e.target.value) : undefined,
+                        )
+                      }
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                    />
+                  </div>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              );
+            }}
           />
         </div>
 
@@ -320,7 +302,9 @@ export default function ExamInfoForm() {
                     value={
                       field.value instanceof Date
                         ? field.value.toISOString().slice(0, 16)
-                        : ""
+                        : typeof field.value === "string"
+                          ? (field.value as string).slice(0, 16)
+                          : ""
                     }
                     onChange={(e) =>
                       field.onChange(
@@ -353,19 +337,12 @@ export default function ExamInfoForm() {
                   Duration (minutes) <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Input
+                  {...field}
                   type="number"
                   id={field.name}
                   aria-invalid={fieldState.invalid}
-                  value={field.value || ""}
                   placeholder="Duration Time"
                   className="h-11 bg-slate-50/50"
-                  onChange={(e) =>
-                    field.onChange(
-                      e.target.value ? parseInt(e.target.value) : undefined,
-                    )
-                  }
-                  onBlur={field.onBlur}
-                  ref={field.ref}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -382,11 +359,13 @@ export default function ExamInfoForm() {
             variant="outline"
             className="w-[100px]"
             onClick={() => {
-              form.reset();
+              if (examInfo) setExamInfo(null);
+              form.reset(emptyDefaultValues);
             }}
           >
             Cancel
           </Button>
+
           <Button type="submit" className="w-[100px]">
             Save
           </Button>
