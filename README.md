@@ -45,16 +45,16 @@ A simplified online assessment application built to demonstrate advanced fronten
 To run this project locally on your machine, follow these steps:
 
 1. Clone the repository:
-   git clone [Your-Repo-URL]
+   `git clone https://github.com/misbahulhoq/oap`
 
 2. Navigate to the project directory:
-   cd online-assessment-platform
+   `cd oap`
 
 3. Install the dependencies:
-   npm install
+   `npm install`
 
 4. Start the development server:
-   npm run dev
+   `npm run dev`
 
 5. Open your browser and visit http://localhost:3000
 
