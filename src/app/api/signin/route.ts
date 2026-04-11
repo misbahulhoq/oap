@@ -14,6 +14,13 @@ export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
 
+    // await User.create({
+    //   name: "Admin User",
+    //   email,
+    //   password,
+    //   role: "admin",
+    // });
+
     const user = await User.findOne({ email });
 
     if (!user) {

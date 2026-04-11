@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
+import * as z from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Clock } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -15,19 +15,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { parse } from "path";
 
-import { Field, FieldLabel, FieldError } from "@/components/ui/field";
-
-const formSchema = z.object({
-  title: z.string().min(1, "Test title is required"),
-  candidates: z.string().min(1, "Total candidates is required"),
-  slots: z.string().min(1, "Slots are required"),
-  questionSet: z.string().min(1, "Question set is required"),
-  questionType: z.string().min(1, "Question type is required"),
-  startTime: z.string().min(1, "Start time is required"),
-  endTime: z.string().min(1, "End time is required"),
-  duration: z.string().optional(),
-});
+const formSchema = z
+  .object({
+    title: z.string().min(1, "Test title is required"),
+    candidates: z.string().min(1, "Total candidates is required"),
+    slots: z.string().min(1, "Slots are required"),
+    questionSet: z.string().min(1, "Question set is required"),
+    questionType: z.string().min(1, "Question type is required"),
+    startTime: z.date().optional(),
+    endTime: z.date().optional(),
+    duration: z.number().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.duration) {
+      ctx.addIssue({
+        path: ["duration"],
+        code: z.ZodIssueCode.custom,
+        message: "Duration is required",
+      });
+    }
+    if (!data.startTime) {
+      ctx.addIssue({
+        path: ["startTime"],
+        code: z.ZodIssueCode.custom,
+        message: "Start time is required",
+      });
+    }
+    if (!data.endTime) {
+      ctx.addIssue({
+        path: ["endTime"],
+        code: z.ZodIssueCode.custom,
+        message: "End time is required",
+      });
+    } else if (data.endTime <= new Date(Date.now() + 60000)) {
+      ctx.addIssue({
+        path: ["endTime"],
+        code: z.ZodIssueCode.custom,
+        message: "End time must be in the future",
+      });
+    }
+  });
 
 export default function ExamInfo() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -38,9 +67,9 @@ export default function ExamInfo() {
       slots: "",
       questionSet: "",
       questionType: "",
-      startTime: "",
-      endTime: "",
-      duration: "",
+      startTime: undefined,
+      endTime: undefined,
+      duration: undefined,
     },
   });
 
@@ -247,13 +276,25 @@ export default function ExamInfo() {
                 </FieldLabel>
                 <div className="relative">
                   <Input
-                    {...field}
                     id={field.name}
+                    type="datetime-local"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Enter start time"
                     className="h-11 border-slate-200 pr-10"
+                    // Convert Date → string for the input's value
+                    value={
+                      field.value instanceof Date
+                        ? field.value.toISOString().slice(0, 16)
+                        : ""
+                    }
+                    // Convert string → Date before storing in RHF
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value ? new Date(e.target.value) : undefined,
+                      )
+                    }
+                    onBlur={field.onBlur}
+                    ref={field.ref}
                   />
-                  <Clock className="absolute top-1/2 right-3 h-5 w-5 -translate-y-1/2 text-slate-400" />
                 </div>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -278,13 +319,23 @@ export default function ExamInfo() {
                 </FieldLabel>
                 <div className="relative">
                   <Input
-                    {...field}
                     id={field.name}
+                    type="datetime-local"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Enter end time"
                     className="h-11 border-slate-200 pr-10"
+                    value={
+                      field.value instanceof Date
+                        ? field.value.toISOString().slice(0, 16)
+                        : ""
+                    }
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value ? new Date(e.target.value) : undefined,
+                      )
+                    }
+                    onBlur={field.onBlur}
+                    ref={field.ref}
                   />
-                  <Clock className="absolute top-1/2 right-3 h-5 w-5 -translate-y-1/2 text-slate-400" />
                 </div>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -308,12 +359,19 @@ export default function ExamInfo() {
                   Duration
                 </FieldLabel>
                 <Input
-                  {...field}
+                  type="number"
                   id={field.name}
                   aria-invalid={fieldState.invalid}
+                  value={field.value || ""}
                   placeholder="Duration Time"
                   className="h-11 border-slate-200 bg-slate-50/50"
-                  readOnly
+                  onChange={(e) =>
+                    field.onChange(
+                      e.target.value ? parseInt(e.target.value) : undefined,
+                    )
+                  }
+                  onBlur={field.onBlur}
+                  ref={field.ref}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -321,6 +379,13 @@ export default function ExamInfo() {
               </Field>
             )}
           />
+        </div>
+
+        {/* Row 5: Submit */}
+        <div className="col-span-1 md:col-span-10">
+          <Button type="submit" className="w-full">
+            Submit
+          </Button>
         </div>
       </form>
     </Card>
