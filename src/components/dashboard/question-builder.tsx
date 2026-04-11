@@ -22,7 +22,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { RichEditor } from "./rich-editor";
 
 // Types & Schema
@@ -196,30 +195,31 @@ export default function QuestionBuilder() {
                               }}
                             />
                           ) : (
-                            <RadioGroup
-                              value={options
-                                .findIndex((o) => o.isCorrect)
-                                ?.toString()}
-                              onValueChange={(val) => {
+                            <button
+                              type="button"
+                              role="radio"
+                              aria-checked={options[index]?.isCorrect || false}
+                              tabIndex={0}
+                              className={`focus-visible:ring-ring aspect-square h-4 w-4 rounded-full border shadow transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${
+                                options[index]?.isCorrect
+                                  ? "border-violet-600 bg-violet-600"
+                                  : "border-slate-300 bg-white"
+                              }`}
+                              onClick={() => {
+                                // For radio, only one option can be correct
                                 const updated = options.map((opt, i) => ({
                                   ...opt,
-                                  isCorrect: i === Number(val),
+                                  isCorrect: i === index,
                                 }));
                                 setValue("options", updated);
                               }}
                             >
-                              {fields.map((field, index) => (
-                                <div
-                                  key={field.id}
-                                  className="group relative space-y-2"
-                                >
-                                  <RadioGroupItem
-                                    id={`correct-${index}`}
-                                    value={index.toString()}
-                                  />
+                              {options[index]?.isCorrect && (
+                                <div className="flex h-full w-full items-center justify-center">
+                                  <div className="h-1.5 w-1.5 rounded-full bg-white" />
                                 </div>
-                              ))}
-                            </RadioGroup>
+                              )}
+                            </button>
                           )}
 
                           <label
