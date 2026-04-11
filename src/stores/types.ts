@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { basicFormSchema } from "@/components/dashboard/exam-info-form";
 
-type Question = {
+export type Question = {
   type: "checkbox" | "radio" | "text";
   question: string;
   options: { option: string; isCorrect: boolean }[] | null;

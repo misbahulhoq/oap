@@ -23,19 +23,21 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RichEditor } from "./rich-editor";
+import { useManageExamStore } from "@/stores/manage-exam-store";
+import { type Question } from "@/stores/types";
 
 // Types & Schema
 type QuestionType = "Checkbox" | "Radio" | "Text";
 
 const questionSchema = z.object({
   type: z.enum(["Checkbox", "Radio", "Text"]),
-  score: z.string().default("1"),
+  score: z.string(),
   questionBody: z.string().min(1, "Question is required"),
   options: z
     .array(
       z.object({
         content: z.string(),
-        isCorrect: z.boolean().default(false),
+        isCorrect: z.boolean(),
       }),
     )
     .optional(),
@@ -45,6 +47,8 @@ type QuestionFormValues = z.infer<typeof questionSchema>;
 
 export default function QuestionBuilder() {
   const [isOpen, setIsOpen] = useState(false);
+  const { questions, addQuestion } = useManageExamStore();
+  const questionNumber = questions.length + 1;
 
   const form = useForm<QuestionFormValues>({
     resolver: zodResolver(questionSchema),
@@ -79,14 +83,42 @@ export default function QuestionBuilder() {
     }
   };
 
+  const formatQuestionForStore = (
+    data: z.infer<typeof questionSchema>,
+  ): Question => {
+    const formattedOptions =
+      data.type === "Text"
+        ? null
+        : (data.options || []).map((opt) => ({
+            option: opt.content,
+            isCorrect: opt.isCorrect,
+          }));
+
+    return {
+      type: data.type.toLowerCase() as "checkbox" | "radio" | "text",
+      question: data.questionBody,
+      options: formattedOptions,
+      answerText: data.type === "Text" ? "" : null,
+    };
+  };
+
   const onSubmit = (data: z.infer<typeof questionSchema>) => {
-    console.log("Saved Question:", data);
+    const formattedQuestion = formatQuestionForStore(data);
+    addQuestion(formattedQuestion);
+    setIsOpen(false);
+    reset();
+  };
+
+  const handleSaveOnly = () => {
+    const data = form.getValues();
+    const formattedQuestion = formatQuestionForStore(data);
+    addQuestion(formattedQuestion);
     setIsOpen(false);
     reset();
   };
 
   return (
-    <div className="w-full p-8">
+    <div className="w-full px-8 py-4">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
@@ -108,9 +140,11 @@ export default function QuestionBuilder() {
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 font-medium text-slate-500">
-                  1
+                  {questionNumber}
                 </div>
-                <h3 className="font-semibold text-slate-800">Question 1</h3>
+                <h3 className="font-semibold text-slate-800">
+                  Question {questionNumber}
+                </h3>
               </div>
 
               <div className="flex items-center gap-4">
@@ -271,7 +305,7 @@ export default function QuestionBuilder() {
                 type="button"
                 variant="outline"
                 className="border-primary text-primary w-24"
-                onClick={() => setIsOpen(false)}
+                onClick={handleSaveOnly}
               >
                 Save
               </Button>
