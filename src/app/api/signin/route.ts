@@ -14,6 +14,8 @@ export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
 
+    // await User.create({ email, password, role: "admin", name: "Admin User" });
+
     const user = await User.findOne({ email });
 
     if (!user) {

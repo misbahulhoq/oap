@@ -23,6 +23,7 @@ export const examApi = baseApi.injectEndpoints({
       {
         success: boolean;
         data: {
+          _id: string;
           title: string;
           candidates: string;
           slots: string;
@@ -31,7 +32,7 @@ export const examApi = baseApi.injectEndpoints({
           duration: string;
           startTime?: Date | undefined;
           endTime?: Date | undefined;
-          questions: Question[];
+          questions: (Question & { _id: string })[];
         }[];
       },
       void
