@@ -9,6 +9,8 @@ export type Question = {
   score?: string;
 };
 
+export type ExamInfo = z.infer<typeof basicFormSchema>;
+
 export type ManageExamStore = {
   examInfo: z.infer<typeof basicFormSchema> | null;
   isExamInfoEditing: boolean;

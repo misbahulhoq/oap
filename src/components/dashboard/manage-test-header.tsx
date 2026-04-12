@@ -6,11 +6,16 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useManageExamStore } from "@/stores/manage-exam-store";
+import { useCreateExamMutation } from "@/redux/examApiSlice";
 
 export default function ManageTestHeader() {
   const pathName = usePathname();
   const questions = useManageExamStore((state) => state.questions);
   const isAddQuestionsPage = pathName === "/dashboard/add-questions";
+
+  const [addExam, { isLoading }] = useCreateExamMutation();
+
+  const handleAddExam = async () => {};
 
   return (
     <Card className="mx-auto mb-4 flex w-full max-w-6xl flex-row items-center justify-between rounded-xl p-6 shadow-sm">
@@ -40,7 +45,9 @@ export default function ManageTestHeader() {
       {/* Right Section: Action Button */}
       <div className="flex items-center gap-2">
         {isAddQuestionsPage && questions.length > 0 && (
-          <Button size={"lg"}>Save</Button>
+          <Button size={"lg"} disabled={isLoading} onClick={handleAddExam}>
+            {isLoading ? "Saving.." : "Save"}
+          </Button>
         )}
 
         <Button variant="outline" size={"lg"} asChild>

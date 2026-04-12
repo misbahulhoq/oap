@@ -1,7 +1,7 @@
+import { ExamInfo, Question } from "@/stores/types";
 import { baseApi } from "./baseApi";
 
 // ── Types ────────────────────────────────────────────────────────────────────
-
 export interface CreateExamDto {
   title: string;
   description?: string;
@@ -10,12 +10,8 @@ export interface CreateExamDto {
 }
 
 export interface Exam {
-  id: number;
-  title: string;
-  description?: string;
-  duration: number;
-  scheduledAt: string;
-  createdAt: string;
+  examInfo: ExamInfo;
+  questions: Question[];
 }
 
 // ── Injected endpoints ───────────────────────────────────────────────────────
@@ -23,7 +19,7 @@ export interface Exam {
 export const examApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // POST /exams
-    createExam: builder.mutation<Exam, CreateExamDto>({
+    createExam: builder.mutation<Exam, Exam>({
       query: (body) => ({
         url: "/exams",
         method: "POST",
