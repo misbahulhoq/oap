@@ -1,4 +1,4 @@
-import QuestionBuilder from "@/components/dashboard/question-builder";
+import QuestionBuilder from "@/components/dashboard/question-creator";
 import QuestionList from "@/components/dashboard/question-list";
 import React from "react";
 

@@ -6,6 +6,7 @@ export type Question = {
   question: string;
   options: { option: string; isCorrect: boolean }[] | null;
   answerText: string | null;
+  score?: string;
 };
 
 export type ManageExamStore = {
