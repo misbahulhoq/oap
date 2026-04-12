@@ -1,26 +1,9 @@
 import React from "react";
 import { CalendarClock, FileText, UsersRound } from "lucide-react";
 import { Button } from "../ui/button";
+import { ExamInfo } from "@/stores/types";
 
-const examStats = [
-  {
-    label: "Candidates",
-    value: "10,000",
-    icon: UsersRound,
-  },
-  {
-    label: "Question Set",
-    value: "3",
-    icon: FileText,
-  },
-  {
-    label: "Exam Slots",
-    value: "3",
-    icon: CalendarClock,
-  },
-];
-
-const ExamCard = () => {
+const ExamCard = ({ title, candidates, questionSet, slots }: ExamInfo) => {
   return (
     <section
       className="bg-card border-border flex w-full flex-col gap-6 rounded-2xl border px-5 py-6 sm:px-8 sm:py-8"
@@ -28,19 +11,36 @@ const ExamCard = () => {
     >
       <div className="flex flex-col gap-5">
         <h2 className="max-w-3xl text-xl leading-[1.4] font-semibold">
-          Psychometric Test for Management Trainee Officer
+          {title}
         </h2>
 
         <div className="grid gap-4 text-sm sm:grid-cols-2 xl:grid-cols-3">
-          {examStats.map(({ label, value, icon: Icon }) => (
-            <div key={label} className="flex items-center gap-2">
-              <span className="text-muted-foreground flex size-6 items-center justify-center">
-                <Icon className="size-5 stroke-[1.75]" />
-              </span>
-              <span className="text-muted-foreground">{label}:</span>
-              <span className="font-medium">{value}</span>
-            </div>
-          ))}
+          {/* Candidates */}
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground flex size-6 items-center justify-center">
+              <UsersRound className="size-5 stroke-[1.75]" />
+            </span>
+            <span className="text-muted-foreground">Candidates:</span>
+            <span className="font-medium">{candidates}</span>
+          </div>
+
+          {/* {/* Question Set */}
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground flex size-6 items-center justify-center">
+              <FileText className="size-5 stroke-[1.75]" />
+            </span>
+            <span className="text-muted-foreground">Question Set:</span>
+            <span className="font-medium">{questionSet}</span>
+          </div>
+
+          {/* Exam Slots */}
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground flex size-6 items-center justify-center">
+              <CalendarClock className="size-5 stroke-[1.75]" />
+            </span>
+            <span className="text-muted-foreground">Exam Slot:</span>
+            <span className="font-medium">{slots}</span>
+          </div>
         </div>
       </div>
 

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useManageExamStore } from "@/stores/manage-exam-store";
@@ -13,6 +13,7 @@ export default function ManageTestHeader() {
   const pathName = usePathname();
   const examInfo = useManageExamStore((state) => state.examInfo);
   const questions = useManageExamStore((state) => state.questions);
+  const clearExamStore = useManageExamStore((state) => state.clearExamStore);
   const isAddQuestionsPage = pathName === "/dashboard/add-questions";
   console.log(questions);
 
@@ -25,6 +26,8 @@ export default function ManageTestHeader() {
         toast("Exam Created Successfully");
       } catch (_err) {
         toast.error("Something went wrong");
+      } finally {
+        clearExamStore();
       }
     }
   };

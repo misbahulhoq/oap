@@ -17,9 +17,31 @@ export const examApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Exam"],
     }),
+
+    // GET /exams
+    getExams: builder.query<
+      {
+        success: boolean;
+        data: {
+          title: string;
+          candidates: string;
+          slots: string;
+          questionSet: string;
+          questionType: string;
+          duration: string;
+          startTime?: Date | undefined;
+          endTime?: Date | undefined;
+          questions: Question[];
+        }[];
+      },
+      void
+    >({
+      query: () => "/exams",
+      providesTags: ["Exam"],
+    }),
   }),
 
   overrideExisting: false,
 });
 
-export const { useCreateExamMutation } = examApi;
+export const { useCreateExamMutation, useGetExamsQuery } = examApi;
