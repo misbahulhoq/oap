@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { basicFormSchema } from "@/components/dashboard/exam-info-form";
+import { basicFormSchema } from "@/components/dashboard/admin/exam-info-form";
 
 export type Question = {
   type: "checkbox" | "radio" | "text";

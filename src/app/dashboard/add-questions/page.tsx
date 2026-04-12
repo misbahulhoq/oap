@@ -1,6 +1,6 @@
-import QuestionBuilder from "@/components/dashboard/question-builder";
-import QuestionList from "@/components/dashboard/question-list";
 import React from "react";
+import QuestionBuilder from "@/components/dashboard/admin/question-builder";
+import QuestionList from "@/components/dashboard/admin/question-list";
 
 const AddQuestionPage = () => {
   return (

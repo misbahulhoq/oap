@@ -2,6 +2,7 @@
 
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
+
 import DashboardPageHeader from "@/components/dashboard/page-header";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { CalendarClock, FileText, UsersRound } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { ExamInfo } from "@/stores/types";
 
 const ExamCard = ({ title, candidates, questionSet, slots }: ExamInfo) => {

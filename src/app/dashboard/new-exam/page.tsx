@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import ExamInfoForm from "@/components/dashboard/exam-info-form";
+import ExamInfoForm from "@/components/dashboard/admin/exam-info-form";
 import { useManageExamStore } from "@/stores/manage-exam-store";
-import ExamInfoCard from "@/components/dashboard/exam-info-card";
+import ExamInfoCard from "@/components/dashboard/admin/exam-info-card";
 
 const NewExamPage = () => {
   const examInfo = useManageExamStore((state) => state.examInfo);

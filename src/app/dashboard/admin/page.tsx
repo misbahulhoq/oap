@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import ExamCard from "@/components/dashboard/exam-card";
+import ExamCard from "@/components/dashboard/admin/exam-card";
 import { useGetExamsQuery } from "@/redux/examApiSlice";
 
 const AdminHomePage = () => {
