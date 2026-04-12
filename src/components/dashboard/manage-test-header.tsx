@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useManageExamStore } from "@/stores/manage-exam-store";
@@ -10,12 +11,23 @@ import { useCreateExamMutation } from "@/redux/examApiSlice";
 
 export default function ManageTestHeader() {
   const pathName = usePathname();
+  const examInfo = useManageExamStore((state) => state.examInfo);
   const questions = useManageExamStore((state) => state.questions);
   const isAddQuestionsPage = pathName === "/dashboard/add-questions";
+  console.log(questions);
 
   const [addExam, { isLoading }] = useCreateExamMutation();
 
-  const handleAddExam = async () => {};
+  const handleAddExam = async () => {
+    if (examInfo) {
+      try {
+        await addExam({ examInfo, questions }).unwrap();
+        toast("Exam Created Successfully");
+      } catch (_err) {
+        toast.error("Something went wrong");
+      }
+    }
+  };
 
   return (
     <Card className="mx-auto mb-4 flex w-full max-w-6xl flex-row items-center justify-between rounded-xl p-6 shadow-sm">

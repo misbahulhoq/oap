@@ -8,6 +8,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const exam = await Exam.create(body);
+    console.log(body);
     return NextResponse.json({ success: true, data: exam }, { status: 201 });
   } catch (error) {
     if (error instanceof Error) {
