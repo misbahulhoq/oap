@@ -5,9 +5,12 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useManageExamStore } from "@/stores/manage-exam-store";
 
 export default function ManageTestHeader() {
   const pathName = usePathname();
+  const questions = useManageExamStore((state) => state.questions);
+  const isAddQuestionsPage = pathName === "/dashboard/add-questions";
 
   return (
     <Card className="mx-auto mb-4 flex w-full max-w-6xl flex-row items-center justify-between rounded-xl p-6 shadow-sm">
@@ -35,7 +38,11 @@ export default function ManageTestHeader() {
       </div>
 
       {/* Right Section: Action Button */}
-      <div>
+      <div className="flex items-center gap-2">
+        {isAddQuestionsPage && questions.length > 0 && (
+          <Button size={"lg"}>Save</Button>
+        )}
+
         <Button variant="outline" size={"lg"} asChild>
           <Link href={"/dashboard/admin"}>Back to Dashboard</Link>
         </Button>

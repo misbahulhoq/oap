@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
-import { Check, Edit2, Trash2 } from "lucide-react";
+import { Check } from "lucide-react";
 
 interface Option {
   id: string;
