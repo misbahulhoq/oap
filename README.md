@@ -6,7 +6,19 @@ A simplified online assessment application built to demonstrate advanced fronten
 
 - **Live Demo:** https://oap-kappa.vercel.app
 - **Video Walkthrough:** [Insert Video Link Here]
-- **Figma Design Reference:** [Insert Figma Link Here]
+- **Figma Design Reference:** https://www.figma.com/design/bZb5aliYqkPYqqHi3U0UeA/Interview-Task?node-id=1-7233&t=kr0JAY9dqsbGkvlV-0
+
+## Credentials
+
+**Employer Credentials:**
+
+- Email: admin@example.com
+- Password: admin123
+
+**Candidate Credentials:**
+
+- Email: user@example.com
+- Password: user123
 
 ---
 
@@ -14,7 +26,7 @@ A simplified online assessment application built to demonstrate advanced fronten
 
 ### Employer Panel
 
-- **Authentication:** Login page with email and password fields, redirecting to the dashboard upon successful login. (Note: Implemented a mock authentication system).
+- **Authentication:** Login page with email and password fields, redirecting to the dashboard upon successful login. (Note: Implemented a real authentication system using Mongodb and nextjs api route).
 - **Dashboard (Online Tests List):** Displays a list of created online tests in a card format. Each card shows the Exam Name, Candidate count, Question Sets, Exam Slots, and a "View Candidates" button.
 - **Create Online Test (Multi-Step Form):**
   - _Step 1 (Basic Info):_ Collects Title, Total Candidates, Total Slots, Question Sets, Question Type, Start Time, End Time, and Duration.
@@ -25,17 +37,16 @@ A simplified online assessment application built to demonstrate advanced fronten
 - **Authentication:** Login system for candidates using email and password.
 - **Dashboard:** Shows assigned exams as cards detailing Duration, Questions count, Negative Marking, and a "Start" button.
 - **Exam Screen:** Displays questions with a live timer countdown.
-- **Exam Controls:** Includes auto-submit on timeout, a manual submit option, and behavioral tracking features (like tab switch detection and fullscreen exit monitoring).
 
 ---
 
 ## 🛠️ Tech Stack & Architecture
 
-- **Framework:** Next.js / React
-- **State Management:** Zustand / Redux Toolkit
-- **Forms & Validation:** React Hook Form paired with Zod/Yup for schema validation
-- **Styling:** Tailwind CSS combined with ShadCN UI (or MUI/Ant Design)
-- **Data Fetching:** Axios and React Query for API handling
+- **Framework:** Next.js
+- **State Management:** Zustand
+- **Forms & Validation:** React Hook Form paired with Zod for schema validation
+- **Styling:** Tailwind CSS combined with ShadCN UI
+- **Data Fetching:** RTK Query for API handling
 - **Code Quality:** Focused on clean, readable, and maintainable code. Utilizes custom hooks for logic encapsulation, reusable modular components, and DRY principles for forms and API calls. Component re-renders are optimized for performance.
 
 ---
@@ -72,7 +83,7 @@ To run this project locally on your machine, follow these steps:
 **2. AI Tools for Development**
 
 - _Which AI tools or processes have you used or recommend to speed up frontend development?_
-  I extensively utilized Claude Code alongside Codex within my VSCode environment. Codex assisted with rapid inline code completion and boilerplate generation. Claude Code was instrumental in scaffolding the complex multi-step forms, setting up the behavioral tracking logic (like tab switching), and refactoring components to align with clean code and DRY principles.
+  I suggest Claude Code with ollama (free version) or direct claude code (paid) for AI tools.
 
 **3. Offline Mode**
 
